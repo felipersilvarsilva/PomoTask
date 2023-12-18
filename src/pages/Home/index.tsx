@@ -11,13 +11,13 @@ import {
 
 export function Home() {
   const { register, handleSubmit, watch, formState } = useForm({
-    resolver: zodResolver(newCycleFormValidationSchema)
+    resolver: zodResolver(newCycleFormValidationSchema),
   });
 
   function handleCreateNewCycle(data: any) {
     console.log(data);
   }
-  console.log(formState.errors)
+  console.log(formState.errors);
 
   const task = watch("task");
   const isSubmitDisabled = !task;
