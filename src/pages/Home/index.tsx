@@ -1,29 +1,32 @@
 import { HandPalm, Play } from "@phosphor-icons/react";
-import {
-  HomeContainer,
-  StartCountDownButton,
-  StopCountDownButton,
-} from "./style";
-import { CyclesContext } from "../../context/CyclesContext";
-import { NewCycleForm } from "./components/NewCycleForm";
-import { Countdown } from "./components/Countdown";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import { useContext } from "react";
 
+import {
+  HomeContainer,
+  StartCountDownButton,
+  StopCountDownButton,
+} from "./style";
+import { NewCycleForm } from "./components/NewCycleForm";
+import { Countdown } from "./components/Countdown";
+import { CyclesContext } from "../../context/CyclesContext";
+
 const newCycleFormValidationSchema = zod.object({
-  task: zod.string().min(5, "Insira o nome da tarefa"),
+  task: zod.string().min(1, "Insira o nome da tarefa"),
   minutesAmount: zod
     .number()
-    .min(1, "O ciclo precisa ser de no minimo 5 minutos")
+    .min(5, "O ciclo precisa ser de no minimo 5 minutos")
     .max(60, "O ciclo precisa ser de no maximo 60 minutos"),
 });
+
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>;
 
 export function Home() {
   const { createNewCycle, handleInterruptCycle, activeCycle } =
     useContext(CyclesContext);
+
   const newCycleForm = useForm<NewCycleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
     defaultValues: {
@@ -31,18 +34,20 @@ export function Home() {
       minutesAmount: 0,
     },
   });
+
   const { handleSubmit, watch, reset } = newCycleForm;
-  const task = watch("task");
-  const isSubmitDisabled = !task;
 
   function handleCreateNewCycle(data: NewCycleFormData) {
     createNewCycle(data);
     reset();
   }
 
+  const task = watch("task");
+  const isSubmitDisabled = !task;
+
   return (
     <HomeContainer>
-      <form onSubmit={handleSubmit(handleCreateNewCycle)} action="">
+      <form onSubmit={handleSubmit(handleCreateNewCycle)}>
         <FormProvider {...newCycleForm}>
           <NewCycleForm />
         </FormProvider>

@@ -4,8 +4,8 @@ import { CyclesContext } from "../../../../context/CyclesContext";
 import { useContext } from "react";
 
 export function NewCycleForm() {
-  const { register } = useFormContext();
   const { activeCycle } = useContext(CyclesContext);
+  const { register } = useFormContext();
 
   return (
     <FormsContainer>
